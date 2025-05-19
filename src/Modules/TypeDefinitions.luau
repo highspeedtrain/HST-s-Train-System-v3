@@ -9,7 +9,8 @@ local typeDefs = {}
 		CurrentSpeed: number,
 		TrainDirection: string,
 		ThrottleNotch: number,
-		BrakeNotch: number
+		BrakeNotch: number,
+		CurrentMaster: VehicleSeat
 	}
 	
 	local reverserDirectionsTable = {
@@ -18,4 +19,5 @@ local typeDefs = {}
 		Reverse = "Reverse"
 	}
 	typeDefs.ReverserDirs = reverserDirectionsTable
+
 return typeDefs
