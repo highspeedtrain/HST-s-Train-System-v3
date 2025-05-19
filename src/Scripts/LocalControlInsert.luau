@@ -1,30 +1,36 @@
 local PlayerService = game:GetService("Players")
 
-local Seat = script.Parent.Parent.DriveSystemSeat
+local VS1 = script.Parent.Parent.DriveSystemSeat
+local VS2 = script.Parent.Parent.DriveSystemSeatTwo
 local ClientScript = script.LocalControl
 
 local player = nil
 local ClientClone = nil
 
-Seat:GetPropertyChangedSignal("Occupant"):Connect(function()
+local function doStuff(Seat : VehicleSeat)
 	if Seat.Occupant then
 		player = PlayerService:GetPlayerFromCharacter(Seat.Occupant.Parent)
-		
+
 		ClientClone = ClientScript:Clone()
 		ClientClone.Parent = player.PlayerGui
 		ClientClone.Enabled = true
-		
+
 		Seat:CanSetNetworkOwnership(player)
-		for _,part in pairs(player.Character:GetDescendants()) do
-			if part:IsA("BasePart") then
-				part.Massless = true
-			end
-		end
 	else
 		if ClientClone then
 			ClientClone:Destroy()
 			ClientClone = nil
 		end
-		Seat:SetNetworkOwnershipAuto()
+		if Seat:CanSetNetworkOwnership() then
+			Seat:SetNetworkOwnershipAuto()
+		end
 	end
+end
+
+VS1:GetPropertyChangedSignal("Occupant"):Connect(function() 
+	doStuff(VS1)
+end)
+
+VS2:GetPropertyChangedSignal("Occupant"):Connect(function() 
+	doStuff(VS2)
 end)
